@@ -19,7 +19,7 @@ formal grammar, and also the world's oldest semantic role labeling system.
 | Phase Zero | Environment setup, API key, hello-world | ✅ Complete |
 | Phase One | LLM fundamentals + prompt engineering | ✅ Complete |
 | Phase Two | First kāraka extractor + rule engine (vertical slice) | ✅ Complete |
-| Phase Three | Question-answering loop + gold test set | ⬜ Not started |
+| Phase Three | Question-answering loop + gold test set | ✅ Complete |
 | Phase Four | Measurement and iteration | ⬜ Not started |
 | Phase Five | Polish and self-refinement loop | ⬜ Not started |
 | Phase Six | Users and writeup | ⬜ Not started |

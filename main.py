@@ -43,20 +43,38 @@ def run_pipeline(sentence: str, question: str) -> None:
     print(f"\n  Reasoning: {result.reasoning}")
 
 
-if __name__ == "__main__":
-    examples = [
-        (
-            "Maya gave Ravi a book at the library.",
-            "Who owns the book now?",
-        ),
-        (
-            "Anna bought groceries from the market on Sunday.",
-            "Where did Anna get the groceries from?",
-        ),
-    ]
-
-    for i, (sentence, question) in enumerate(examples):
-        if i > 0:
-            time.sleep(5)  # gemini-2.0-flash free tier: 15 requests/minute
+def interactive_loop() -> None:
+    print("\nKaraka-IR — interactive mode  (type 'quit' to exit)\n")
+    while True:
+        sentence = input("Sentence : ").strip()
+        if sentence.lower() in ("quit", "exit", "q", ""):
+            break
+        question = input("Question : ").strip()
+        if question.lower() in ("quit", "exit", "q", ""):
+            break
         run_pipeline(sentence, question)
         print()
+
+
+if __name__ == "__main__":
+    import sys
+
+    if "--interactive" in sys.argv or "-i" in sys.argv:
+        interactive_loop()
+    else:
+        examples = [
+            (
+                "Maya gave Ravi a book at the library.",
+                "Who owns the book now?",
+            ),
+            (
+                "Anna bought groceries from the market on Sunday.",
+                "Where did Anna get the groceries from?",
+            ),
+        ]
+
+        for i, (sentence, question) in enumerate(examples):
+            if i > 0:
+                time.sleep(5)
+            run_pipeline(sentence, question)
+            print()
