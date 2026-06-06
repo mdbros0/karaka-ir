@@ -14,7 +14,7 @@ client = instructor.from_provider(
 
 
 class Answer(BaseModel):
-    answer: str = Field(description="A single fluent sentence that directly answers the question")
+    answer: str = Field(description="A fluent answer directly addressing the question. Use one sentence for specific questions; use multiple sentences if the question is open-ended (e.g. 'tell me about X') and multiple facts are available.")
     reasoning: str = Field(description="The specific facts used to arrive at this answer")
 
 
@@ -36,7 +36,8 @@ QUESTION: {question}
 Instructions:
 - Answer using ONLY the facts above. Do not use outside knowledge.
 - If the facts are insufficient to answer, say so explicitly.
-- Your answer must be a single complete sentence.
+- For specific questions (who, what, where, when), answer in one sentence.
+- For open-ended questions ('tell me about X', 'describe X'), use as many sentences as needed to cover all relevant facts — do not leave facts out.
 - Your reasoning must cite the specific fact(s) that support the answer."""
 
     return client.create(

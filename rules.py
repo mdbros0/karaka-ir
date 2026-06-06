@@ -6,6 +6,7 @@ PURCHASE_VERBS = {"buy", "purchase"}
 RECEIVING_VERBS = {"receive", "get", "acquire", "take"}
 POSSESSION_VERBS = {"have", "own", "possess"}
 IDENTITY_VERBS = {"be"}
+ORIGIN_VERBS = {"be", "come"}
 
 
 def apply_rules(facts: list[Fact]) -> list[Fact]:
@@ -67,5 +68,10 @@ def apply_rules(facts: list[Fact]) -> list[Fact]:
     # Rule 7: identity — be + karta + karma → is_a(karta, karma)
     if action and action[0] in IDENTITY_VERBS and karta and karma:
         derived.append(("is_a", karta[0], karma[0]))
+
+    # Rule 8: origin — be/come + karta + apadana → is_from(karta, apadana)
+    # "Bhoomika is from Faridabad" → is_from(Bhoomika, Faridabad)
+    if action and action[0] in ORIGIN_VERBS and karta and apadana:
+        derived.append(("is_from", karta[0], apadana[0]))
 
     return derived
