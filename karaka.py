@@ -15,7 +15,7 @@ client = instructor.from_provider(
 class Entity(BaseModel):
     """A noun-like participant in an event."""
 
-    lemma: str = Field(description="The base form of the noun, e.g., 'book' not 'books'")
+    lemma: str = Field(description="The base form of the noun (singular/infinitive). Preserve capitalization of proper nouns — 'Bhoomika' not 'bhoomika', 'University of Guelph' not 'university of guelph'. Use common nouns in lowercase.")
     entity_type: Optional[str] = Field(
         default=None, description="person, object, location, time, organization, etc."
     )
@@ -76,9 +76,10 @@ For each event, identify:
 
 Policies:
 - Produce one frame per verb — do not merge separate events into one frame.
-- Shared participants (e.g., the same person is karta of multiple events) should appear in each relevant frame.
+- Resolve pronouns to the named entity they refer to. If 'she' refers to 'Bhoomika', use 'Bhoomika' as the lemma, not 'she'. Always prefer the proper name over a pronoun.
+- Shared participants should appear in each relevant frame using their resolved name.
 - For motion verbs (walk, run, flow, travel, move, go): origin ('from X') is apadana; destination ('to X') is adhikarana.
-- For identity/classification verbs (be, am, is, are): karta is the subject, karma is the predicate noun ('she is a girl' → karta=she, karma=girl).
+- For identity/classification verbs (be, am, is, are): karta is the subject, karma is the predicate noun ('she is a girl' → karta=Bhoomika, karma=girl).
 - Leave any role null if not expressed in that event.""",
             }
         ],
