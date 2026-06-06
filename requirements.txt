@@ -2,3 +2,4 @@ python-dotenv      # load .env into os.environ
 google-genai       # Google Generative AI SDK (not google-generativeai — different package)
 pydantic>=2.0      # schema validation; v2 required, v1 has a different API
 instructor         # structured LLM output via Pydantic (Phase Two onwards)
+jsonref            # required by instructor's Gemini integration
