@@ -41,5 +41,6 @@ Instructions:
 
     return client.create(
         response_model=Answer,
+        config={"temperature": 0.0},
         messages=[{"role": "user", "content": prompt}],
     )

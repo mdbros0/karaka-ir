@@ -45,7 +45,8 @@
       "expected_derived": [
         ["formerly_owned", "market",  "grocery"],
         ["agent_is_human", "Anna"],
-        ["event_time",     "Sunday"]
+        ["event_time",     "Sunday"],
+        ["owns",           "Anna",    "grocery"]
       ],
       "rule_gaps": []
     },
@@ -131,7 +132,8 @@
       },
       "expected_derived": [
         ["formerly_owned", "electronics store", "laptop"],
-        ["agent_is_human", "John"]
+        ["agent_is_human", "John"],
+        ["owns",           "John",              "laptop"]
       ],
       "rule_gaps": []
     },
@@ -195,7 +197,7 @@
         "adhikarana":  null
       },
       "expected_derived": [
-        ["owns",           "neighbor", "bicycle"],
+        ["borrowed",       "neighbor", "bicycle"],
         ["agent_is_human", "Maria"]
       ],
       "rule_gaps": ["lend implies temporary possession, not true ownership — owns() overclaims; a borrowed() predicate would be more precise"]
@@ -261,7 +263,8 @@
         "adhikarana":  null
       },
       "expected_derived": [
-        ["owns", "orphanage", "book"]
+        ["owns",                  "orphanage",  "book"],
+        ["agent_is_organization", "foundation"]
       ],
       "rule_gaps": ["agent_is_human does not fire for organizational karta — correct behavior, but agent_is_org could be added"]
     },
@@ -326,7 +329,8 @@
         "adhikarana":  null
       },
       "expected_derived": [
-        ["agent_is_human", "Ali"]
+        ["agent_is_human", "Ali"],
+        ["owns",           "Ali", "scholarship"]
       ],
       "rule_gaps": ["receive is not in TRANSFER_VERBS — no owns() derived even though semantically Ali now owns the scholarship; adding 'receive' to TRANSFER_VERBS would fix this"]
     }

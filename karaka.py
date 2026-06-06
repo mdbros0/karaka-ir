@@ -49,6 +49,7 @@ class KarakaFrame(BaseModel):
 def extract_karaka(sentence: str) -> KarakaFrame:
     return client.create(
         response_model=KarakaFrame,
+        config={"temperature": 0.0},
         messages=[
             {
                 "role": "user",

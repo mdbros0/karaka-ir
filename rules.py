@@ -1,7 +1,9 @@
 from facts import Fact
 
-TRANSFER_VERBS = {"give", "send", "lend", "donate", "hand"}
-PURCHASE_VERBS = {"buy", "purchase", "acquire"}
+PERMANENT_TRANSFER_VERBS = {"give", "send", "donate", "hand"}
+TEMPORARY_TRANSFER_VERBS = {"lend"}
+PURCHASE_VERBS = {"buy", "purchase"}
+RECEIVING_VERBS = {"receive", "get", "acquire", "take"}
 
 
 def apply_rules(facts: list[Fact]) -> list[Fact]:
@@ -23,15 +25,25 @@ def apply_rules(facts: list[Fact]) -> list[Fact]:
     apadana = get("apadana")
     adhikarana = get("adhikarana")
 
-    # Rule 1: transfer of possession
+    # Rule 1a: permanent transfer of possession
     # give(karta, karma, sampradana) → owns(sampradana, karma)
-    if action and action[0] in TRANSFER_VERBS and karma and sampradana:
+    if action and action[0] in PERMANENT_TRANSFER_VERBS and karma and sampradana:
         derived.append(("owns", sampradana[0], karma[0]))
 
-    # Rule 2: purchase implies prior ownership by the source
+    # Rule 1b: temporary transfer of possession
+    # lend(karta, karma, sampradana) → borrowed(sampradana, karma)
+    if action and action[0] in TEMPORARY_TRANSFER_VERBS and karma and sampradana:
+        derived.append(("borrowed", sampradana[0], karma[0]))
+
+    # Rule 2a: purchase implies prior ownership by the source
     # buy(karta, karma, apadana) → formerly_owned(apadana, karma)
     if action and action[0] in PURCHASE_VERBS and karma and apadana:
         derived.append(("formerly_owned", apadana[0], karma[0]))
+
+    # Rule 2b: purchase/receiving implies ownership by the karta (recipient/buyer), unless a sampradana (beneficiary) is present
+    # buy/receive(karta, karma) → owns(karta, karma)
+    if action and (action[0] in PURCHASE_VERBS or action[0] in RECEIVING_VERBS) and karta and karma and not sampradana:
+        derived.append(("owns", karta[0], karma[0]))
 
     # Rule 3: karta with entity_type=person → agent is human
     if karta and karta[1] == "person":
@@ -41,5 +53,9 @@ def apply_rules(facts: list[Fact]) -> list[Fact]:
     if adhikarana:
         label = "event_time" if adhikarana[1] == "time" else "event_location"
         derived.append((label, adhikarana[0]))
+
+    # Rule 5: organizational agent classification
+    if karta and karta[1] == "organization":
+        derived.append(("agent_is_organization", karta[0]))
 
     return derived
