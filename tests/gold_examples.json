@@ -36,14 +36,14 @@
         "verb_root": "buy",
         "tense": "past",
         "karta":       { "lemma": "Anna",      "entity_type": "person" },
-        "karma":       { "lemma": "groceries", "entity_type": "object" },
+        "karma":       { "lemma": "grocery",   "entity_type": "object" },
         "karana":      null,
         "sampradana":  null,
         "apadana":     { "lemma": "market",    "entity_type": "location" },
         "adhikarana":  { "lemma": "Sunday",    "entity_type": "time" }
       },
       "expected_derived": [
-        ["formerly_owned", "market",  "groceries"],
+        ["formerly_owned", "market",  "grocery"],
         ["agent_is_human", "Anna"],
         ["event_time",     "Sunday"]
       ],
@@ -126,11 +126,11 @@
         "karma":       { "lemma": "laptop", "entity_type": "object" },
         "karana":      null,
         "sampradana":  null,
-        "apadana":     { "lemma": "store",  "entity_type": "location" },
+        "apadana":     { "lemma": "electronics store", "entity_type": "location" },
         "adhikarana":  null
       },
       "expected_derived": [
-        ["formerly_owned", "store",  "laptop"],
+        ["formerly_owned", "electronics store", "laptop"],
         ["agent_is_human", "John"]
       ],
       "rule_gaps": []
@@ -140,21 +140,19 @@
       "sentence": "Water flows from the mountain to the sea.",
       "question": "Where does the water come from?",
       "expected_answer": "The water comes from the mountain.",
-      "tags": ["karta", "apadana", "adhikarana", "inanimate_agent"],
+      "tags": ["karta", "karma", "apadana", "inanimate_agent", "motion_goal_as_karma"],
       "expected_frame": {
         "verb_root": "flow",
         "tense": "present",
         "karta":       { "lemma": "water",    "entity_type": "object" },
-        "karma":       null,
+        "karma":       { "lemma": "sea",      "entity_type": "location" },
         "karana":      null,
         "sampradana":  null,
         "apadana":     { "lemma": "mountain", "entity_type": "location" },
-        "adhikarana":  { "lemma": "sea",      "entity_type": "location" }
+        "adhikarana":  null
       },
-      "expected_derived": [
-        ["event_location", "sea"]
-      ],
-      "rule_gaps": ["agent_is_human does not fire — water is inanimate (correct behavior)", "sea as adhikarana is debatable; strict Paninian theory would assign karma (goal) to the destination of motion"]
+      "expected_derived": [],
+      "rule_gaps": ["agent_is_human does not fire — water is inanimate (correct behavior)", "no rules fire for motion-goal karma — destination of flow is structurally karma but triggers no inference"]
     },
     {
       "id": "ex008",
