@@ -7,7 +7,7 @@ from typing import Optional
 load_dotenv()
 
 client = instructor.from_provider(
-    "google/gemini-2.5-flash",
+    "google/gemini-3.5-flash",
     api_key=os.getenv("GEMINI_API_KEY"),
 )
 
@@ -83,7 +83,7 @@ if __name__ == "__main__":
 
     for i, sentence in enumerate(sentences):
         if i > 0:
-            time.sleep(13)  # free tier: 5 requests/minute
+            time.sleep(5)  # gemini-2.0-flash free tier: 15 requests/minute
         print(f"\n>>> {sentence}")
         frame = extract_karaka(sentence)
         print(frame.model_dump_json(indent=2))
