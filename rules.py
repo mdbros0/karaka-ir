@@ -4,6 +4,8 @@ PERMANENT_TRANSFER_VERBS = {"give", "send", "donate", "hand"}
 TEMPORARY_TRANSFER_VERBS = {"lend"}
 PURCHASE_VERBS = {"buy", "purchase"}
 RECEIVING_VERBS = {"receive", "get", "acquire", "take"}
+POSSESSION_VERBS = {"have", "own", "possess"}
+IDENTITY_VERBS = {"be"}
 
 
 def apply_rules(facts: list[Fact]) -> list[Fact]:
@@ -57,5 +59,13 @@ def apply_rules(facts: list[Fact]) -> list[Fact]:
     # Rule 5: organizational agent classification
     if karta and karta[1] == "organization":
         derived.append(("agent_is_organization", karta[0]))
+
+    # Rule 6: possession — have/own + karta + karma → owns(karta, karma)
+    if action and action[0] in POSSESSION_VERBS and karta and karma:
+        derived.append(("owns", karta[0], karma[0]))
+
+    # Rule 7: identity — be + karta + karma → is_a(karta, karma)
+    if action and action[0] in IDENTITY_VERBS and karta and karma:
+        derived.append(("is_a", karta[0], karma[0]))
 
     return derived

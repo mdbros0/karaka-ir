@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from karaka import extract_karaka, KarakaFrame
-from facts import frame_to_facts
+from facts import frame_to_facts, document_to_facts
 from rules import apply_rules
 
 ROLES = ["karta", "karma", "karana", "sampradana", "apadana", "adhikarana"]
@@ -110,9 +110,11 @@ def main():
         print(f"[{i+1:02d}/{n}] {ex['id']}  {snippet}", end="  ", flush=True)
 
         try:
-            frame   = extract_karaka(ex["sentence"])
-            base    = frame_to_facts(frame)
-            derived = apply_rules(base)
+            doc     = extract_karaka(ex["sentence"])
+            # Gold examples are single-event; score against the first extracted frame.
+            frame   = doc.events[0] if doc.events else None
+            base    = frame_to_facts(frame) if frame else []
+            derived = apply_rules(base) if frame else []
 
             fs = score_frame(frame, ex["expected_frame"])
             ds = score_derived(derived, ex["expected_derived"])

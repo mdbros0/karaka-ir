@@ -17,7 +17,7 @@ class Entity(BaseModel):
 
     lemma: str = Field(description="The base form of the noun, e.g., 'book' not 'books'")
     entity_type: Optional[str] = Field(
-        default=None, description="person, object, location, time, etc."
+        default=None, description="person, object, location, time, organization, etc."
     )
 
 
@@ -46,31 +46,40 @@ class KarakaFrame(BaseModel):
     )
 
 
-def extract_karaka(sentence: str) -> KarakaFrame:
+class KarakaDocument(BaseModel):
+    """All events extracted from a sentence — one frame per verb."""
+
+    events: list[KarakaFrame] = Field(
+        description="One KarakaFrame per distinct verb/event in the sentence, in order of appearance"
+    )
+
+
+def extract_karaka(sentence: str) -> KarakaDocument:
     return client.create(
-        response_model=KarakaFrame,
+        response_model=KarakaDocument,
         config={"temperature": 0.0},
         messages=[
             {
                 "role": "user",
-                "content": f"""Analyze this sentence using Panini's karaka theory.
+                "content": f"""Analyze this sentence and extract ALL events using Panini's karaka theory.
+Produce one KarakaFrame for each distinct verb or event in the sentence.
 
 Sentence: "{sentence}"
 
-Identify the six karaka roles:
+For each event, identify:
 - karta (agent): who autonomously performs the action
-- karma (patient): what the agent most directly affects
+- karma (patient): what the action most directly affects
 - karana (instrument): the most effective means used
 - sampradana (recipient): for whom or to whom the action is done
 - apadana (source): from where or whom something separates
 - adhikarana (locus): where or when the action takes place
 
-Policy for motion verbs (walk, run, flow, travel, move, go):
-- The origin ('from X') is apadana.
-- The destination ('to X', 'into X') is adhikarana — the locus where the motion ends.
-- Do NOT assign the destination to karma for motion verbs.
-
-Leave any role as null if it is not present in the sentence.""",
+Policies:
+- Produce one frame per verb — do not merge separate events into one frame.
+- Shared participants (e.g., the same person is karta of multiple events) should appear in each relevant frame.
+- For motion verbs (walk, run, flow, travel, move, go): origin ('from X') is apadana; destination ('to X') is adhikarana.
+- For identity/classification verbs (be, am, is, are): karta is the subject, karma is the predicate noun ('she is a girl' → karta=she, karma=girl).
+- Leave any role null if not expressed in that event.""",
             }
         ],
     )
@@ -81,16 +90,16 @@ if __name__ == "__main__":
 
     sentences = [
         "The chef sliced the onion with a sharp knife.",
-        "Maya gave Ravi a book yesterday at the library.",
-        "The teacher explained the lesson to her students.",
-        "Water flows from the mountain to the sea.",
-        "Anna bought groceries from the market on Sunday.",
+        "Maya gave Ravi a book at the library.",
+        "Bhoomika studies at the University of Guelph and has a Coach bag.",
     ]
 
     for i, sentence in enumerate(sentences):
         if i > 0:
-            time.sleep(5)  # gemini-2.0-flash free tier: 15 requests/minute
+            time.sleep(5)
         print(f"\n>>> {sentence}")
-        frame = extract_karaka(sentence)
-        print(frame.model_dump_json(indent=2))
+        doc = extract_karaka(sentence)
+        for j, frame in enumerate(doc.events):
+            print(f"  Event {j+1}: {frame.verb_root}")
+            print(frame.model_dump_json(indent=2))
         print("---")
