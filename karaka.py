@@ -64,6 +64,11 @@ Identify the six karaka roles:
 - apadana (source): from where or whom something separates
 - adhikarana (locus): where or when the action takes place
 
+Policy for motion verbs (walk, run, flow, travel, move, go):
+- The origin ('from X') is apadana.
+- The destination ('to X', 'into X') is adhikarana — the locus where the motion ends.
+- Do NOT assign the destination to karma for motion verbs.
+
 Leave any role as null if it is not present in the sentence.""",
             }
         ],

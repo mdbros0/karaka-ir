@@ -140,19 +140,21 @@
       "sentence": "Water flows from the mountain to the sea.",
       "question": "Where does the water come from?",
       "expected_answer": "The water comes from the mountain.",
-      "tags": ["karta", "karma", "apadana", "inanimate_agent", "motion_goal_as_karma"],
+      "tags": ["karta", "apadana", "adhikarana", "inanimate_agent", "motion_destination"],
       "expected_frame": {
         "verb_root": "flow",
         "tense": "present",
         "karta":       { "lemma": "water",    "entity_type": "object" },
-        "karma":       { "lemma": "sea",      "entity_type": "location" },
+        "karma":       null,
         "karana":      null,
         "sampradana":  null,
         "apadana":     { "lemma": "mountain", "entity_type": "location" },
-        "adhikarana":  null
+        "adhikarana":  { "lemma": "sea",      "entity_type": "location" }
       },
-      "expected_derived": [],
-      "rule_gaps": ["agent_is_human does not fire — water is inanimate (correct behavior)", "no rules fire for motion-goal karma — destination of flow is structurally karma but triggers no inference"]
+      "expected_derived": [
+        ["event_location", "sea"]
+      ],
+      "rule_gaps": ["agent_is_human does not fire — water is inanimate (correct behavior)"]
     },
     {
       "id": "ex008",
