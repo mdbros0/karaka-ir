@@ -1,0 +1,334 @@
+{
+  "version": "1.0",
+  "description": "Gold-standard examples for Karaka-IR pipeline evaluation. Each example has a hand-labeled karaka frame and expected derived facts so individual stages can be evaluated separately from end-to-end accuracy.",
+  "notes": "expected_answer is approximate — LLM output varies. Use it as a reference, not an exact match target. expected_frame and expected_derived are the structural ground truth. rule_gaps lists inference gaps the current rules.py does not cover.",
+  "examples": [
+    {
+      "id": "ex001",
+      "sentence": "Maya gave Ravi a book at the library.",
+      "question": "Who owns the book now?",
+      "expected_answer": "Ravi owns the book.",
+      "tags": ["karta", "karma", "sampradana", "adhikarana", "transfer_rule"],
+      "expected_frame": {
+        "verb_root": "give",
+        "tense": "past",
+        "karta":       { "lemma": "Maya",    "entity_type": "person" },
+        "karma":       { "lemma": "book",    "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  { "lemma": "Ravi",    "entity_type": "person" },
+        "apadana":     null,
+        "adhikarana":  { "lemma": "library", "entity_type": "location" }
+      },
+      "expected_derived": [
+        ["owns",           "Ravi",    "book"],
+        ["agent_is_human", "Maya"],
+        ["event_location", "library"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex002",
+      "sentence": "Anna bought groceries from the market on Sunday.",
+      "question": "Where did Anna get the groceries from?",
+      "expected_answer": "Anna got the groceries from the market.",
+      "tags": ["karta", "karma", "apadana", "adhikarana", "purchase_rule", "temporal_adhikarana"],
+      "expected_frame": {
+        "verb_root": "buy",
+        "tense": "past",
+        "karta":       { "lemma": "Anna",      "entity_type": "person" },
+        "karma":       { "lemma": "groceries", "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  null,
+        "apadana":     { "lemma": "market",    "entity_type": "location" },
+        "adhikarana":  { "lemma": "Sunday",    "entity_type": "time" }
+      },
+      "expected_derived": [
+        ["formerly_owned", "market",  "groceries"],
+        ["agent_is_human", "Anna"],
+        ["event_time",     "Sunday"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex003",
+      "sentence": "The chef sliced the onion with a sharp knife.",
+      "question": "What did the chef use to slice the onion?",
+      "expected_answer": "The chef used a knife to slice the onion.",
+      "tags": ["karta", "karma", "karana"],
+      "expected_frame": {
+        "verb_root": "slice",
+        "tense": "past",
+        "karta":       { "lemma": "chef",  "entity_type": "person" },
+        "karma":       { "lemma": "onion", "entity_type": "object" },
+        "karana":      { "lemma": "knife", "entity_type": "object" },
+        "sampradana":  null,
+        "apadana":     null,
+        "adhikarana":  null
+      },
+      "expected_derived": [
+        ["agent_is_human", "chef"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex004",
+      "sentence": "The teacher explained the lesson to her students.",
+      "question": "Who did the teacher explain the lesson to?",
+      "expected_answer": "The teacher explained the lesson to the students.",
+      "tags": ["karta", "karma", "sampradana"],
+      "expected_frame": {
+        "verb_root": "explain",
+        "tense": "past",
+        "karta":       { "lemma": "teacher", "entity_type": "person" },
+        "karma":       { "lemma": "lesson",  "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  { "lemma": "student", "entity_type": "person" },
+        "apadana":     null,
+        "adhikarana":  null
+      },
+      "expected_derived": [
+        ["agent_is_human", "teacher"]
+      ],
+      "rule_gaps": ["explain does not trigger transfer rule — no ownership derived even though sampradana is present"]
+    },
+    {
+      "id": "ex005",
+      "sentence": "Sara sent her sister a birthday gift.",
+      "question": "Who now has the birthday gift?",
+      "expected_answer": "Sara's sister now has the birthday gift.",
+      "tags": ["karta", "karma", "sampradana", "transfer_rule"],
+      "expected_frame": {
+        "verb_root": "send",
+        "tense": "past",
+        "karta":       { "lemma": "Sara",   "entity_type": "person" },
+        "karma":       { "lemma": "gift",   "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  { "lemma": "sister", "entity_type": "person" },
+        "apadana":     null,
+        "adhikarana":  null
+      },
+      "expected_derived": [
+        ["owns",           "sister", "gift"],
+        ["agent_is_human", "Sara"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex006",
+      "sentence": "John purchased a laptop from the electronics store.",
+      "question": "What did John buy?",
+      "expected_answer": "John bought a laptop.",
+      "tags": ["karta", "karma", "apadana", "purchase_rule"],
+      "expected_frame": {
+        "verb_root": "purchase",
+        "tense": "past",
+        "karta":       { "lemma": "John",   "entity_type": "person" },
+        "karma":       { "lemma": "laptop", "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  null,
+        "apadana":     { "lemma": "store",  "entity_type": "location" },
+        "adhikarana":  null
+      },
+      "expected_derived": [
+        ["formerly_owned", "store",  "laptop"],
+        ["agent_is_human", "John"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex007",
+      "sentence": "Water flows from the mountain to the sea.",
+      "question": "Where does the water come from?",
+      "expected_answer": "The water comes from the mountain.",
+      "tags": ["karta", "apadana", "adhikarana", "inanimate_agent"],
+      "expected_frame": {
+        "verb_root": "flow",
+        "tense": "present",
+        "karta":       { "lemma": "water",    "entity_type": "object" },
+        "karma":       null,
+        "karana":      null,
+        "sampradana":  null,
+        "apadana":     { "lemma": "mountain", "entity_type": "location" },
+        "adhikarana":  { "lemma": "sea",      "entity_type": "location" }
+      },
+      "expected_derived": [
+        ["event_location", "sea"]
+      ],
+      "rule_gaps": ["agent_is_human does not fire — water is inanimate (correct behavior)", "sea as adhikarana is debatable; strict Paninian theory would assign karma (goal) to the destination of motion"]
+    },
+    {
+      "id": "ex008",
+      "sentence": "The doctor prescribed medicine to the patient at the clinic.",
+      "question": "Where was the medicine prescribed?",
+      "expected_answer": "The medicine was prescribed at the clinic.",
+      "tags": ["karta", "karma", "sampradana", "adhikarana"],
+      "expected_frame": {
+        "verb_root": "prescribe",
+        "tense": "past",
+        "karta":       { "lemma": "doctor",   "entity_type": "person" },
+        "karma":       { "lemma": "medicine", "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  { "lemma": "patient",  "entity_type": "person" },
+        "apadana":     null,
+        "adhikarana":  { "lemma": "clinic",   "entity_type": "location" }
+      },
+      "expected_derived": [
+        ["agent_is_human",  "doctor"],
+        ["event_location",  "clinic"]
+      ],
+      "rule_gaps": ["prescribe does not trigger transfer rule despite sampradana being present"]
+    },
+    {
+      "id": "ex009",
+      "sentence": "Maria lent her bicycle to her neighbor.",
+      "question": "Who has the bicycle now?",
+      "expected_answer": "Maria's neighbor has the bicycle.",
+      "tags": ["karta", "karma", "sampradana", "transfer_rule"],
+      "expected_frame": {
+        "verb_root": "lend",
+        "tense": "past",
+        "karta":       { "lemma": "Maria",    "entity_type": "person" },
+        "karma":       { "lemma": "bicycle",  "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  { "lemma": "neighbor", "entity_type": "person" },
+        "apadana":     null,
+        "adhikarana":  null
+      },
+      "expected_derived": [
+        ["owns",           "neighbor", "bicycle"],
+        ["agent_is_human", "Maria"]
+      ],
+      "rule_gaps": ["lend implies temporary possession, not true ownership — owns() overclaims; a borrowed() predicate would be more precise"]
+    },
+    {
+      "id": "ex010",
+      "sentence": "The students walked from the school to the park.",
+      "question": "Where did the students start their walk?",
+      "expected_answer": "The students started from the school.",
+      "tags": ["karta", "apadana", "adhikarana"],
+      "expected_frame": {
+        "verb_root": "walk",
+        "tense": "past",
+        "karta":       { "lemma": "student", "entity_type": "person" },
+        "karma":       null,
+        "karana":      null,
+        "sampradana":  null,
+        "apadana":     { "lemma": "school",  "entity_type": "location" },
+        "adhikarana":  { "lemma": "park",    "entity_type": "location" }
+      },
+      "expected_derived": [
+        ["agent_is_human", "student"],
+        ["event_location", "park"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex011",
+      "sentence": "He cooked rice in the kitchen.",
+      "question": "Where did he cook the rice?",
+      "expected_answer": "He cooked the rice in the kitchen.",
+      "tags": ["karta", "karma", "adhikarana", "pronoun_karta"],
+      "expected_frame": {
+        "verb_root": "cook",
+        "tense": "past",
+        "karta":       { "lemma": "he",      "entity_type": "person" },
+        "karma":       { "lemma": "rice",    "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  null,
+        "apadana":     null,
+        "adhikarana":  { "lemma": "kitchen", "entity_type": "location" }
+      },
+      "expected_derived": [
+        ["agent_is_human", "he"],
+        ["event_location", "kitchen"]
+      ],
+      "rule_gaps": ["pronoun karta loses referent — 'he' is unresolved without discourse context"]
+    },
+    {
+      "id": "ex012",
+      "sentence": "The foundation donated books to the orphanage.",
+      "question": "Who received the books?",
+      "expected_answer": "The orphanage received the books.",
+      "tags": ["karta", "karma", "sampradana", "transfer_rule", "org_agent"],
+      "expected_frame": {
+        "verb_root": "donate",
+        "tense": "past",
+        "karta":       { "lemma": "foundation", "entity_type": "organization" },
+        "karma":       { "lemma": "book",       "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  { "lemma": "orphanage",  "entity_type": "organization" },
+        "apadana":     null,
+        "adhikarana":  null
+      },
+      "expected_derived": [
+        ["owns", "orphanage", "book"]
+      ],
+      "rule_gaps": ["agent_is_human does not fire for organizational karta — correct behavior, but agent_is_org could be added"]
+    },
+    {
+      "id": "ex013",
+      "sentence": "Priya bought flowers from the florist for her mother.",
+      "question": "Where did Priya buy the flowers?",
+      "expected_answer": "Priya bought the flowers from the florist.",
+      "tags": ["karta", "karma", "apadana", "sampradana", "purchase_rule"],
+      "expected_frame": {
+        "verb_root": "buy",
+        "tense": "past",
+        "karta":       { "lemma": "Priya",   "entity_type": "person" },
+        "karma":       { "lemma": "flower",  "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  { "lemma": "mother",  "entity_type": "person" },
+        "apadana":     { "lemma": "florist", "entity_type": "person" },
+        "adhikarana":  null
+      },
+      "expected_derived": [
+        ["formerly_owned", "florist", "flower"],
+        ["agent_is_human", "Priya"]
+      ],
+      "rule_gaps": ["sampradana=mother is present but buy does not trigger transfer rule — no gifted() inference made"]
+    },
+    {
+      "id": "ex014",
+      "sentence": "The farmer harvested wheat in the fields.",
+      "question": "What did the farmer harvest?",
+      "expected_answer": "The farmer harvested wheat.",
+      "tags": ["karta", "karma", "adhikarana"],
+      "expected_frame": {
+        "verb_root": "harvest",
+        "tense": "past",
+        "karta":       { "lemma": "farmer", "entity_type": "person" },
+        "karma":       { "lemma": "wheat",  "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  null,
+        "apadana":     null,
+        "adhikarana":  { "lemma": "field",  "entity_type": "location" }
+      },
+      "expected_derived": [
+        ["agent_is_human", "farmer"],
+        ["event_location", "field"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex015",
+      "sentence": "Ali received a scholarship from the university.",
+      "question": "Does Ali own the scholarship?",
+      "expected_answer": "The facts do not contain an explicit ownership fact for Ali and the scholarship, but Ali received it from the university.",
+      "tags": ["karta", "karma", "apadana", "rule_gap"],
+      "expected_frame": {
+        "verb_root": "receive",
+        "tense": "past",
+        "karta":       { "lemma": "Ali",        "entity_type": "person" },
+        "karma":       { "lemma": "scholarship", "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  null,
+        "apadana":     { "lemma": "university",  "entity_type": "organization" },
+        "adhikarana":  null
+      },
+      "expected_derived": [
+        ["agent_is_human", "Ali"]
+      ],
+      "rule_gaps": ["receive is not in TRANSFER_VERBS — no owns() derived even though semantically Ali now owns the scholarship; adding 'receive' to TRANSFER_VERBS would fix this"]
+    }
+  ]
+}
