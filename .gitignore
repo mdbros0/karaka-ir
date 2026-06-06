@@ -1,0 +1,32 @@
+# Environment and secrets — never commit these
+.env
+*.env
+.env.*
+
+# Python bytecode — machine-generated, not source code
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment — recreate with: pip install -r requirements.txt
+.venv/
+venv/
+env/
+
+# Jupyter auto-save (relevant for Phase One notebooks)
+.ipynb_checkpoints/
+
+# Tool caches
+.pytest_cache/
+.mypy_cache/
+
+# IDE settings
+.vscode/
+.idea/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
