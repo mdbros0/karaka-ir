@@ -20,9 +20,21 @@ formal grammar, and also the world's oldest semantic role labeling system.
 | Phase One | LLM fundamentals + prompt engineering | ✅ Complete |
 | Phase Two | First kāraka extractor + rule engine (vertical slice) | ✅ Complete |
 | Phase Three | Question-answering loop + gold test set | ✅ Complete |
-| Phase Four | Measurement and iteration | ⬜ Not started |
+| Phase Four | Measurement and iteration | 🔄 In progress |
 | Phase Five | Polish and self-refinement loop | ⬜ Not started |
 | Phase Six | Users and writeup | ⬜ Not started |
+
+## Evaluation Baseline (Phase Four)
+
+30-example gold test set — run `python tests/eval.py` to reproduce.
+
+| Metric | Score |
+|--------|-------|
+| Verb root accuracy | 30/30 (100%) |
+| Frame recall | 100% |
+| Frame precision | 100% |
+| Derived fact F1 | 1.00 |
+| Perfect examples | 30/30 |
 
 ## Stack
 

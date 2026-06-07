@@ -15,7 +15,7 @@ client = instructor.from_provider(
 class Entity(BaseModel):
     """A noun-like participant in an event."""
 
-    lemma: str = Field(description="The base form of the noun (singular/infinitive). Preserve capitalization of proper nouns — 'Bhoomika' not 'bhoomika', 'University of Guelph' not 'university of guelph'. Use common nouns in lowercase.")
+    lemma: str = Field(description="The base form of the noun — always singular ('book' not 'books', 'grocery' not 'groceries', 'artifact' not 'artifacts'). Preserve capitalization of proper nouns ('Bhoomika', 'University of Guelph'). Use lowercase for common nouns. Strip possessives — use 'mother' not 'Priya's mother', 'sister' not 'her sister'.")
     entity_type: Optional[str] = Field(
         default=None, description="person, object, location, time, organization, etc."
     )

@@ -333,6 +333,335 @@
         ["owns",           "Ali", "scholarship"]
       ],
       "rule_gaps": ["receive is not in TRANSFER_VERBS — no owns() derived even though semantically Ali now owns the scholarship; adding 'receive' to TRANSFER_VERBS would fix this"]
+    },
+    {
+      "id": "ex016",
+      "sentence": "The museum owns three ancient artifacts.",
+      "question": "What does the museum own?",
+      "expected_answer": "The museum owns ancient artifacts.",
+      "tags": ["karta", "karma", "possession_rule", "org_agent"],
+      "expected_frame": {
+        "verb_root": "own",
+        "tense": "present",
+        "karta":       { "lemma": "museum",   "entity_type": "organization" },
+        "karma":       { "lemma": "artifact", "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  null,
+        "apadana":     null,
+        "adhikarana":  null
+      },
+      "expected_derived": [
+        ["owns",                  "museum",   "artifact"],
+        ["agent_is_organization", "museum"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex017",
+      "sentence": "John owns a motorbike.",
+      "question": "Does John have a motorbike?",
+      "expected_answer": "Yes, John owns a motorbike.",
+      "tags": ["karta", "karma", "possession_rule"],
+      "expected_frame": {
+        "verb_root": "own",
+        "tense": "present",
+        "karta":       { "lemma": "John",      "entity_type": "person" },
+        "karma":       { "lemma": "motorbike", "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  null,
+        "apadana":     null,
+        "adhikarana":  null
+      },
+      "expected_derived": [
+        ["owns",           "John", "motorbike"],
+        ["agent_is_human", "John"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex018",
+      "sentence": "The director is a filmmaker.",
+      "question": "What is the director?",
+      "expected_answer": "The director is a filmmaker.",
+      "tags": ["karta", "karma", "identity_rule"],
+      "expected_frame": {
+        "verb_root": "be",
+        "tense": "present",
+        "karta":       { "lemma": "director",  "entity_type": "person" },
+        "karma":       { "lemma": "filmmaker", "entity_type": "person" },
+        "karana":      null,
+        "sampradana":  null,
+        "apadana":     null,
+        "adhikarana":  null
+      },
+      "expected_derived": [
+        ["is_a",           "director", "filmmaker"],
+        ["agent_is_human", "director"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex019",
+      "sentence": "The ambassador comes from Japan.",
+      "question": "Where is the ambassador from?",
+      "expected_answer": "The ambassador is from Japan.",
+      "tags": ["karta", "apadana", "origin_rule"],
+      "expected_frame": {
+        "verb_root": "come",
+        "tense": "present",
+        "karta":       { "lemma": "ambassador", "entity_type": "person" },
+        "karma":       null,
+        "karana":      null,
+        "sampradana":  null,
+        "apadana":     { "lemma": "Japan",      "entity_type": "location" },
+        "adhikarana":  null
+      },
+      "expected_derived": [
+        ["is_from",        "ambassador", "Japan"],
+        ["agent_is_human", "ambassador"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex020",
+      "sentence": "IBM donated laptops to the school.",
+      "question": "Who received the laptops?",
+      "expected_answer": "The school received the laptops.",
+      "tags": ["karta", "karma", "sampradana", "transfer_rule", "org_agent"],
+      "expected_frame": {
+        "verb_root": "donate",
+        "tense": "past",
+        "karta":       { "lemma": "IBM",    "entity_type": "organization" },
+        "karma":       { "lemma": "laptop", "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  { "lemma": "school", "entity_type": "organization" },
+        "apadana":     null,
+        "adhikarana":  null
+      },
+      "expected_derived": [
+        ["owns",                  "school", "laptop"],
+        ["agent_is_organization", "IBM"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex021",
+      "sentence": "The bank lent money to the startup.",
+      "question": "Does the startup own the money?",
+      "expected_answer": "The startup borrowed the money from the bank — it is a temporary arrangement, not permanent ownership.",
+      "tags": ["karta", "karma", "sampradana", "temp_transfer_rule", "org_agent"],
+      "expected_frame": {
+        "verb_root": "lend",
+        "tense": "past",
+        "karta":       { "lemma": "bank",    "entity_type": "organization" },
+        "karma":       { "lemma": "money",   "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  { "lemma": "startup", "entity_type": "organization" },
+        "apadana":     null,
+        "adhikarana":  null
+      },
+      "expected_derived": [
+        ["borrowed",              "startup", "money"],
+        ["agent_is_organization", "bank"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex022",
+      "sentence": "The train traveled from Mumbai to Delhi.",
+      "question": "Where did the train go?",
+      "expected_answer": "The train traveled to Delhi.",
+      "tags": ["karta", "apadana", "adhikarana", "motion_verb", "inanimate_agent"],
+      "expected_frame": {
+        "verb_root": "travel",
+        "tense": "past",
+        "karta":       { "lemma": "train",  "entity_type": "object" },
+        "karma":       null,
+        "karana":      null,
+        "sampradana":  null,
+        "apadana":     { "lemma": "Mumbai", "entity_type": "location" },
+        "adhikarana":  { "lemma": "Delhi",  "entity_type": "location" }
+      },
+      "expected_derived": [
+        ["event_location", "Delhi"]
+      ],
+      "rule_gaps": ["inanimate karta (train) — agent_is_human correctly does not fire"]
+    },
+    {
+      "id": "ex023",
+      "sentence": "The refugees fled from the border to the camp.",
+      "question": "Where did the refugees flee to?",
+      "expected_answer": "The refugees fled to the camp.",
+      "tags": ["karta", "apadana", "adhikarana", "motion_verb"],
+      "expected_frame": {
+        "verb_root": "flee",
+        "tense": "past",
+        "karta":       { "lemma": "refugee", "entity_type": "person" },
+        "karma":       null,
+        "karana":      null,
+        "sampradana":  null,
+        "apadana":     { "lemma": "border",  "entity_type": "location" },
+        "adhikarana":  { "lemma": "camp",    "entity_type": "location" }
+      },
+      "expected_derived": [
+        ["agent_is_human", "refugee"],
+        ["event_location", "camp"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex024",
+      "sentence": "The surgeon operated on the patient using a scalpel at the hospital.",
+      "question": "What instrument did the surgeon use?",
+      "expected_answer": "The surgeon used a scalpel.",
+      "tags": ["karta", "karma", "karana", "adhikarana"],
+      "expected_frame": {
+        "verb_root": "operate",
+        "tense": "past",
+        "karta":       { "lemma": "surgeon",  "entity_type": "person" },
+        "karma":       { "lemma": "patient",  "entity_type": "person" },
+        "karana":      { "lemma": "scalpel",  "entity_type": "object" },
+        "sampradana":  null,
+        "apadana":     null,
+        "adhikarana":  { "lemma": "hospital", "entity_type": "location" }
+      },
+      "expected_derived": [
+        ["agent_is_human", "surgeon"],
+        ["event_location", "hospital"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex025",
+      "sentence": "The company acquired the startup.",
+      "question": "Who owns the startup now?",
+      "expected_answer": "The company owns the startup.",
+      "tags": ["karta", "karma", "receive_rule", "org_agent"],
+      "expected_frame": {
+        "verb_root": "acquire",
+        "tense": "past",
+        "karta":       { "lemma": "company", "entity_type": "organization" },
+        "karma":       { "lemma": "startup", "entity_type": "organization" },
+        "karana":      null,
+        "sampradana":  null,
+        "apadana":     null,
+        "adhikarana":  null
+      },
+      "expected_derived": [
+        ["owns",                  "company", "startup"],
+        ["agent_is_organization", "company"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex026",
+      "sentence": "The professor taught calculus to the students in the classroom.",
+      "question": "Where was calculus taught?",
+      "expected_answer": "Calculus was taught in the classroom.",
+      "tags": ["karta", "karma", "sampradana", "adhikarana"],
+      "expected_frame": {
+        "verb_root": "teach",
+        "tense": "past",
+        "karta":       { "lemma": "professor", "entity_type": "person" },
+        "karma":       { "lemma": "calculus",  "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  { "lemma": "student",   "entity_type": "person" },
+        "apadana":     null,
+        "adhikarana":  { "lemma": "classroom", "entity_type": "location" }
+      },
+      "expected_derived": [
+        ["agent_is_human", "professor"],
+        ["event_location", "classroom"]
+      ],
+      "rule_gaps": ["teach does not trigger transfer rule — no owns() derived for students"]
+    },
+    {
+      "id": "ex027",
+      "sentence": "Priya sent the report to her manager by email.",
+      "question": "Who now has the report?",
+      "expected_answer": "The manager now has the report.",
+      "tags": ["karta", "karma", "sampradana", "karana", "transfer_rule"],
+      "expected_frame": {
+        "verb_root": "send",
+        "tense": "past",
+        "karta":       { "lemma": "Priya",   "entity_type": "person" },
+        "karma":       { "lemma": "report",  "entity_type": "object" },
+        "karana":      { "lemma": "email",   "entity_type": "object" },
+        "sampradana":  { "lemma": "manager", "entity_type": "person" },
+        "apadana":     null,
+        "adhikarana":  null
+      },
+      "expected_derived": [
+        ["owns",           "manager", "report"],
+        ["agent_is_human", "Priya"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex028",
+      "sentence": "The children played in the garden.",
+      "question": "Where did the children play?",
+      "expected_answer": "The children played in the garden.",
+      "tags": ["karta", "adhikarana"],
+      "expected_frame": {
+        "verb_root": "play",
+        "tense": "past",
+        "karta":       { "lemma": "child",  "entity_type": "person" },
+        "karma":       null,
+        "karana":      null,
+        "sampradana":  null,
+        "apadana":     null,
+        "adhikarana":  { "lemma": "garden", "entity_type": "location" }
+      },
+      "expected_derived": [
+        ["agent_is_human", "child"],
+        ["event_location", "garden"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex029",
+      "sentence": "The shopkeeper sold the painting to the collector.",
+      "question": "Who now owns the painting?",
+      "expected_answer": "The collector now owns the painting.",
+      "tags": ["karta", "karma", "sampradana", "transfer_rule"],
+      "expected_frame": {
+        "verb_root": "sell",
+        "tense": "past",
+        "karta":       { "lemma": "shopkeeper", "entity_type": "person" },
+        "karma":       { "lemma": "painting",   "entity_type": "object" },
+        "karana":      null,
+        "sampradana":  { "lemma": "collector",  "entity_type": "person" },
+        "apadana":     null,
+        "adhikarana":  null
+      },
+      "expected_derived": [
+        ["owns",           "collector",  "painting"],
+        ["agent_is_human", "shopkeeper"]
+      ],
+      "rule_gaps": []
+    },
+    {
+      "id": "ex030",
+      "sentence": "He drove from Chicago to New York.",
+      "question": "Where did he drive to?",
+      "expected_answer": "He drove to New York.",
+      "tags": ["karta", "apadana", "adhikarana", "motion_verb", "pronoun_karta"],
+      "expected_frame": {
+        "verb_root": "drive",
+        "tense": "past",
+        "karta":       { "lemma": "he",       "entity_type": "person" },
+        "karma":       null,
+        "karana":      null,
+        "sampradana":  null,
+        "apadana":     { "lemma": "Chicago",  "entity_type": "location" },
+        "adhikarana":  { "lemma": "New York", "entity_type": "location" }
+      },
+      "expected_derived": [
+        ["agent_is_human", "he"],
+        ["event_location", "New York"]
+      ],
+      "rule_gaps": ["pronoun karta 'he' is unresolved without discourse context"]
     }
   ]
 }

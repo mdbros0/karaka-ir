@@ -1,6 +1,6 @@
 from facts import Fact
 
-PERMANENT_TRANSFER_VERBS = {"give", "send", "donate", "hand"}
+PERMANENT_TRANSFER_VERBS = {"give", "send", "donate", "hand", "sell", "trade", "transfer", "ship"}
 TEMPORARY_TRANSFER_VERBS = {"lend"}
 PURCHASE_VERBS = {"buy", "purchase"}
 RECEIVING_VERBS = {"receive", "get", "acquire", "take"}
