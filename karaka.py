@@ -15,7 +15,7 @@ client = instructor.from_provider(
 class Entity(BaseModel):
     """A noun-like participant in an event."""
 
-    lemma: str = Field(description="The base form of the noun — always singular ('book' not 'books', 'grocery' not 'groceries', 'artifact' not 'artifacts'). Preserve capitalization of proper nouns ('Bhoomika', 'University of Guelph'). Use lowercase for common nouns. Strip possessives — use 'mother' not 'Priya's mother', 'sister' not 'her sister'.")
+    lemma: str = Field(description="The base form of the noun — always singular. Use the head noun alone, stripping quality adjectives ('knife' not 'sharp knife', 'artifact' not 'ancient artifacts', 'gift' not 'birthday gift'). Exception: preserve compound nouns where the modifier is a brand name or category-specifier ('coach bag' not 'bag', 'computer science' not 'science', 'electronics store' not 'store'). Preserve capitalization of proper nouns ('Bhoomika', 'University of Guelph'). Use lowercase for common nouns. Strip possessives ('mother' not 'Priya's mother').")
     entity_type: Optional[str] = Field(
         default=None, description="person, object, location, time, organization, etc."
     )
@@ -76,10 +76,11 @@ For each event, identify:
 
 Policies:
 - Produce one frame per verb — do not merge separate events into one frame.
+- If a verb has conjoined objects ('has a bag and a cold'), produce one frame per object so each gets its own karma.
 - Resolve pronouns to the named entity they refer to. If 'she' refers to 'Bhoomika', use 'Bhoomika' as the lemma, not 'she'. Always prefer the proper name over a pronoun.
 - Shared participants should appear in each relevant frame using their resolved name.
 - For motion verbs (walk, run, flow, travel, move, go): origin ('from X') is apadana; destination ('to X') is adhikarana.
-- For identity/classification verbs (be, am, is, are): karta is the subject, karma is the predicate noun ('she is a girl' → karta=Bhoomika, karma=girl).
+- For identity/classification verbs (be, am, is, are): karta is the subject, karma is the predicate noun ('she is a girl' → karta=Bhoomika, karma=girl). Origin markers ('from X') on identity verbs are apadana ('is from Faridabad' → verb=be, karta=Bhoomika, apadana=Faridabad).
 - Leave any role null if not expressed in that event.""",
             }
         ],

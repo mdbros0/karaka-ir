@@ -68,8 +68,8 @@ def run_pipeline(sentence: str, question: str) -> None:
     else:
         print("  (no rules fired)")
 
-    # Stage 4: render answer from merged fact pools
-    result = render_answer(question, all_base, all_derived)
+    # Stage 4: render answer — pass structured frames (preserves participant-event binding)
+    result = render_answer(question, doc.events, all_derived)
     print("\n[4] ANSWER")
     print(f"  {result.answer}")
     print(f"\n  Reasoning: {result.reasoning}")

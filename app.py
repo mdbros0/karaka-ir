@@ -87,7 +87,7 @@ def render_pipeline(sentence: str, question: str) -> None:
             st.info("No rules fired.")
 
     with st.spinner("Generating answer…"):
-        result = render_answer(question, all_base, all_derived)
+        result = render_answer(question, doc.events, all_derived)
 
     st.subheader("Answer")
     st.success(result.answer)
